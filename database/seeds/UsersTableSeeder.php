@@ -1,0 +1,45 @@
+<?php
+
+use App\Role;
+use App\User;
+use Illuminate\Database\Seeder;
+
+class UsersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        User::truncate();
+
+        $adminRole = Role::where('name', 'admin')->first();
+        $authorRole = Role::where('name', 'author')->first();
+        $userRole = Role::where('name', 'user')->first();
+
+        $admin = factory(App\User::class)->create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('admin'),
+        ]);
+
+        $author = factory(App\User::class)->create([
+            'name' => 'author',
+            'email' => 'author@author.com',
+            'password' => bcrypt('author'),
+        ]);
+
+        $user = factory(App\User::class)->create([
+            'name' => 'user',
+            'email' => 'user@user.com',
+            'password' => bcrypt('user'),
+        ]);
+
+        $admin->roles()->attach($adminRole);
+        $author->roles()->attach($authorRole);
+        $user->roles()->attach($userRole);
+        
+    }
+}
